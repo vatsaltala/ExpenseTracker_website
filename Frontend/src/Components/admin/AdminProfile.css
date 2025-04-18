@@ -1,0 +1,124 @@
+.App {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  
+  .user-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    background-color: #f4f7fb;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .profile-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .avatar {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+  }
+  
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .profile-info h2 {
+    margin: 10px 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .profile-info p {
+    font-size: 16px;
+    color: #555;
+    margin: 5px 0;
+  }
+  
+  .profile-info p strong {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .profile-card {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .file-input {
+    display: none;
+  }
+  
+  .upload-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 15px;
+    background: #f0f0f0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .upload-label:hover {
+    background: #e0e0e0;
+  }
+  
+  .upload-button {
+    padding: 10px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .profile-image {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .change-image-button {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }

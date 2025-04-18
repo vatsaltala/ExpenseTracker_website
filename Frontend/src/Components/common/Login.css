@@ -1,0 +1,25 @@
+.login-fullscreen-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #9A616D;
+}
+
+.login-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-full-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.login-right {
+  flex: 1;
+  background-color: #fff;
+}
