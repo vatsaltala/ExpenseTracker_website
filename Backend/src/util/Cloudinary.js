@@ -1,12 +1,13 @@
 
 const cloudinary = require("cloudinary").v2;
+require("dotenv").config()
 
 
 const uploadFileToCloudinary = async (file) => {
         cloundinary.config({
-        cloud_name:"drxv1saia",
-        api_key:"746829616211295",
-        api_secret:"8gp_X-CgwBDNZbjoQX00LEb_Ipw"
+        cloud_name:process.env.cloud_name,
+        api_key:process.env.api_key,
+        api_secret:process.env.api_secret
     })
 
     const cloundinaryResponse = await cloudinary.uploader.upload(file.path);

@@ -7,7 +7,7 @@ app.use(cors())
 require('dotenv').config();
 
 
-mongoose.connect("mongodb://127.0.0.1:27017/mydatabase").then(()=>{
+mongoose.connect(process.env.database_url).then(()=>{ 
     console.log("database connected")
 }) 
 
@@ -36,7 +36,7 @@ app.use("/issue", IssueRoutes)
 const IncomeCategoryRoutes=require("./src/routes/IncomeCategoryRoutes")
 app.use("/incomecategory",IncomeCategoryRoutes)
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.port;
 app.listen(PORT,()=>{
     console.log("server started on port no",PORT)
 })

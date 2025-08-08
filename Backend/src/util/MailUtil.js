@@ -1,5 +1,6 @@
 
 const mailer=require("nodemailer")
+require("dotenv").config()
 
 const sendingmail = async (to, subject, text) => {
     try {
