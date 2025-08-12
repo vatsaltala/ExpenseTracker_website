@@ -25,6 +25,7 @@ import About from "./Components/common/About";
 import ContactUs from "./Components/common/ContactUs";
 import Login from "./Components/common/Login";
 import { Issue } from "./Components/admin/Issue";
+import { Userinfo } from "./Components/layouts/Userinfo";
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
               <Route path="income" element={<Income/>}></Route>
               <Route path="AllExpense" element={<History/>}></Route>
               <Route path="chart" element={<Chart/>}></Route>
+              <Route path="info" element={<Userinfo/>}></Route>
             </Route>
 
             <Route path="/admin" element={<AdminSidebar/>}>  

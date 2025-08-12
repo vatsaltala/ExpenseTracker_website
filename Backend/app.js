@@ -11,6 +11,9 @@ mongoose.connect(process.env.database_url).then(()=>{
     console.log("database connected")
 }) 
 
+const UploadRoutes= require("./src/routes/UploadRoutes")
+app.use("/upload", UploadRoutes);
+
 const UserRoutes =require("./src/routes/UserRoutes")
 app.use("/user",UserRoutes)
 

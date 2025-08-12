@@ -43,7 +43,7 @@ export const UserSidebar = () => {
         data-bs-theme="dark"
       >
         <div className="sidebar-brand">
-          <Link to="./index.html" className="brand-link">
+          <Link to="/user/info" className="brand-link">
             <span className="brand-text fw-light">
               {name.firstname+" "+name.lastname || "Welcome"}
             </span>
