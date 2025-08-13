@@ -1,87 +1,165 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  Box,
-  Button,
-  Typography,
-  Paper,
-  Avatar
-} from "@mui/material";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { useForm } from "react-hook-form";
+import "./Userinfo.css";
 
 export const Userinfo = () => {
-  const [file, setFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
+  const [profiles, setProfiles] = useState([]);
+  const [preview, setPreview] = useState(null);
+  const [editId, setEditId] = useState(null);
+  const [submittedOnce, setSubmittedOnce] = useState(false);
+  const [per,setPer]=useState(false)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!file) return alert("Please select an image");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+  } = useForm();
 
-    const formData = new FormData();
-    formData.append("image", file);
+  const imageFile = watch("image");
 
-    try {
-      const res = await axios.post("http://localhost:3000/upload", formData, {
+  useEffect(() => {
+    fetchProfiles();
+  }, []);
+
+  useEffect(() => {
+    // Show preview when image changes
+    if (imageFile && imageFile[0]) {
+      setPreview(URL.createObjectURL(imageFile[0]));
+    } else {
+      setPreview(null);
+    }
+  }, [imageFile]);
+
+const fetchProfiles = async () => {
+  try {
+    const res = await axios.get("http://localhost:3000/upload");
+    setProfiles(res.data.data || []);
+
+    // Enable upload if no profiles exist
+    if (!res.data.data || res.data.data.length === 0) {
+      setPer(true);
+    } else {
+      setPer(false);
+    }
+  } catch (err) {
+    console.error("Error fetching profiles:", err);
+  }
+};
+
+const onSubmit = async (data) => {
+  if (!data.name || (!data.image && !editId)) {
+    alert("Please enter name and select an image");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("name", data.name);
+  if (data.image && data.image[0]) {
+    formData.append("image", data.image[0]);
+  }
+
+  try {
+    if (editId) {
+      await axios.put(`http://localhost:3000/upload/${editId}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      setImageUrl(res.data.imageUrl);
+      setEditId(null);
+    } else {
+      await axios.post("http://localhost:3000/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+    }
+
+    reset();
+    setPreview(null);
+    fetchProfiles();
+  } catch (err) {
+    if (err.response?.status === 400) {
+      alert(err.response.data.message);
+    } else {
+      console.error("Error saving profile:", err);
+    }
+  }
+};
+
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3000/upload/${id}`);
+      fetchProfiles();
     } catch (err) {
-      console.error("Upload error:", err);
+      console.error("Error deleting profile:", err);
     }
   };
 
+  const handleEdit = (profile) => {
+    setValue("name", profile.name);
+    setPreview(profile.profilepic);
+    setEditId(profile._id);
+  };
+
   return (
-    <Paper
-      elevation={3}
-      sx={{
-        p: 3,
-        maxWidth: 400,
-        mx: "auto",
-        mt: 5,
-        textAlign: "center",
-      }}
-    >
-      <Typography variant="h5" gutterBottom>
-        User Info
-      </Typography>
+    <div className="container">
+      <h2>User Profiles</h2>
 
-      <form onSubmit={handleSubmit}>
-        <Button
-          variant="outlined"
-          component="label"
-          startIcon={<CloudUploadIcon />}
-          sx={{ mb: 2 }}
-        >
-          Choose File
-          <input
-            type="file"
-            hidden
-            onChange={(e) => setFile(e.target.files[0])}
-          />
-        </Button>
+      <div className="card">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="form-group">
+            <label>Name</label>
+            <input
+              type="text"
+              placeholder="Enter name"
+              {...register("name")}
+            />
+          </div>
 
-        <Box>
-          <Button
-            variant="contained"
+          <div className="form-group">
+            <label>Profile Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              {...register("image")}
+            />
+          </div>
+
+          {preview && (
+            <div className="preview">
+              <img src={preview} alt="Preview" />
+            </div>
+          )}
+ 
+          <button
             type="submit"
-            sx={{ mt: 2 }}
-            disabled={!file}
+            disabled={!editId && !per} // disable only when both are false
           >
-            Upload
-          </Button>
-        </Box>
-      </form>
+            {editId ? "Update" : "Upload"}
+          </button>
 
-      {imageUrl && (
-        <Box mt={3}>
-          <Typography variant="subtitle1">Uploaded Image:</Typography>
-          <Avatar
-            src={imageUrl}
-            alt="Uploaded"
-            sx={{ width: 120, height: 120, mx: "auto", mt: 1 }}
-          />
-        </Box>
-      )}
-    </Paper>
+
+        </form>
+      </div>
+
+      <div className="profile-list">
+        {profiles.map((profile) => (
+          <div key={profile._id} className="profile-card">
+            <img
+              src={profile.profilepic}
+              alt={profile.name}
+              onClick={() => handleEdit(profile)}
+            />
+            <p>{profile.name}</p>
+            <button
+              className="delete-btn"
+              onClick={() => handleDelete(profile._id)}
+            >
+              Delete
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };

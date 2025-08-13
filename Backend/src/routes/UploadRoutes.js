@@ -1,18 +1,24 @@
-import express from "express";
-import upload from "../config/multer";
+const express = require("express");
+const upload = require("../config/multer");
+const {
+  createProfile,
+  getProfiles,
+  updateProfile,
+  deleteProfile
+} = require("../controllers/Profilecontroller");
 
 const router = express.Router();
 
-// POST request to upload image
-router.post("/", upload.single("image"), (req, res) => {
-  try {
-    res.json({
-      message: "Image uploaded successfully",
-      imageUrl: req.file.path
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+// Create profile (upload + save to DB)
+router.post("/", upload.single("image"), createProfile);
 
-export default router;
+// Get all profiles
+router.get("/", getProfiles);
+
+// Update profile
+router.put("/:id", upload.single("image"), updateProfile);
+
+// Delete profile
+router.delete("/:id", deleteProfile);
+
+module.exports = router;
