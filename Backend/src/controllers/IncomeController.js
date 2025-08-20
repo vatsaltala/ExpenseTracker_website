@@ -2,7 +2,7 @@ const incomemodel = require("../models/IncomeModel");
 
 const getAllIncomes = async (req, res) => {
     try {
-        const getincome = await incomemodel.find().populate("accountid userid");
+        const getincome = await incomemodel.find().populate("userid");
         if (getincome.length == 0) {
             res.status(404).json({
                 message: "No incomes found",

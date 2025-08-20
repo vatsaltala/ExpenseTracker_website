@@ -1,111 +1,102 @@
-import React, { useEffect, useState } from "react";
+// src/components/AdminSidebar.jsx
+import React from "react";
 import { AdminNavbar } from "./AdminNavbar";
 import { Link, Outlet } from "react-router-dom";
-import axios from "axios";
+import { useUser } from "../../context/UserContext"; // use shared context
 
 export const AdminSidebar = () => {
-  const [userdata, setUserdata] = useState({ firstname: "", lastname: "" });
-  useEffect(() => {
-    const fetchAdminDetails = async () => {
-      try {
-        const userid = localStorage.getItem("id");
-        if (userid) {
-          const userres = await axios.get(`http://localhost:3000/user/getuser/${userid}`);
-          console.log(userres.data);
-          setUserdata({
-            firstname: userres.data.data.firstname,
-            lastname: userres.data.data.lastname,
-          });
-        }
-      } catch (err) {
-        console.error("Error fetching admin details:", err);
-      }
-    };
+  const { profile } = useUser();
 
-    fetchAdminDetails(); // Call the function
-  }, []); 
   return (
     <>
-      <AdminNavbar></AdminNavbar>
+      <AdminNavbar />
+
       <aside
         className="app-sidebar bg-body-secondary shadow"
         data-bs-theme="dark"
+        style={{
+          width: "250px",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          height: "100vh",
+          overflowY: "auto"
+        }}
       >
-        <div className="sidebar-brand">
-          <Link to="./index.html" className="brand-link">
-            <span className="brand-text fw-light">{userdata.firstname} {userdata.lastname}</span>
+        <div className="sidebar-brand d-flex align-items-center p-3">
+          {/* Profile Picture */}
+          <Link to="/admin/info" className="brand-link d-flex align-items-center">
+            <img
+              src={
+                profile?.profilepic
+                  ? profile.profilepic
+                  : "https://via.placeholder.com/50"
+              }
+              alt="Admin"
+              style={{
+                width: "50px",
+                height: "50px",
+                borderRadius: "50%",
+                objectFit: "cover",
+                marginRight: "10px"
+              }}
+            />
+            {/* Name */}
+            <span className="brand-text fw-light">
+              {profile?.name || "Admin"}
+            </span>
           </Link>
         </div>
 
-        <div
-          className=""
-          data-overlayscrollbars-viewport="scrollbarHidden overflowXHidden overflowYScroll"
-          tabIndex={-1}
-          style={{
-            marginRight: "-16px",
-            marginBottom: "-16px",
-            marginLeft: 0,
-            top: "-8px",
-            right: "auto",
-            left: "-8px",
-            width: "calc(100% + 16px)",
-            padding: 8
-          }}
-        >
-          <nav className="mt-2">
-            <ul
-              className="nav sidebar-menu flex-column"
-              data-lte-toggle="treeview"
-              role="menu"
-              data-accordion="false"
-            >
-              <li className="nav-item menu-open">
-                <Link to="/admin/adminprofile" className="nav-link active">
-                  <i className="nav-icon bi bi-speedometer" />
-                  <p>
-                    Admin profile
-                    <i className="nav-arrow bi bi-chevron-right" />
-                  </p>
-                </Link>
-                <ul className="nav nav-treeview">
-                  <li className="nav-item">
-                    <Link to="/admin/addcategory" className="nav-link active">
-                      <i className="nav-icon bi bi-circle" />
-                      <p>add Expense_category</p>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/admin/addincomecategory" className="nav-link active">
-                      <i className="nav-icon bi bi-circle" />
-                      <p>add Income_category</p>
-                    </Link>
-                  </li>
-                  {/* <li className="nav-item">
-                    <Link to="/admin/chart1" className="nav-link">
-                      <i className="nav-icon bi bi-circle" />
-                      <p>chart</p>
-                    </Link>
-                  </li> */}
-                  <li className="nav-item">
-                    <Link to="/admin/userdetails" className="nav-link">
-                      <i className="nav-icon bi bi-circle" />
-                      <p>user details</p>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/admin/issues" className="nav-link">
-                      <i className="nav-icon bi bi-circle" />
-                      <p>issues</p>
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </nav>
-        </div>
+        <nav className="mt-2">
+          <ul
+            className="nav sidebar-menu flex-column"
+            data-lte-toggle="treeview"
+            role="menu"
+            data-accordion="false"
+          >
+            <li className="nav-item menu-open">
+              <Link to="/admin/adminprofile" className="nav-link active">
+                <i className="nav-icon bi bi-speedometer" />
+                <p>
+                  Admin Profile
+                  <i className="nav-arrow bi bi-chevron-right" />
+                </p>
+              </Link>
+
+              <ul className="nav nav-treeview">
+                <li className="nav-item">
+                  <Link to="/admin/addcategory" className="nav-link active">
+                    <i className="nav-icon bi bi-circle" />
+                    <p>Add Expense Category</p>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/admin/addincomecategory" className="nav-link active">
+                    <i className="nav-icon bi bi-circle" />
+                    <p>Add Income Category</p>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/admin/userdetails" className="nav-link">
+                    <i className="nav-icon bi bi-circle" />
+                    <p>User Details</p>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/admin/issues" className="nav-link">
+                    <i className="nav-icon bi bi-circle" />
+                    <p>Issues</p>
+                  </Link>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
       </aside>
-      <main className="app-main">
-        <Outlet></Outlet>
+
+      <main className="app-main" style={{ marginLeft: "250px" }}>
+        <Outlet />
       </main>
     </>
   );

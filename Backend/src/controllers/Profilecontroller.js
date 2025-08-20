@@ -8,8 +8,10 @@ const createProfile = async (req, res) => {
     
     const profile = await profileModel.create({
       name: req.body.name,
-      profilepic: req.file.path
+      profilepic: req.file.path,
+      userid:req.params.id
     });
+    // console.log("abcdefghijklmnopqrstuvwxyz:",req.user._id)
 
     res.status(201).json({
       message: "Profile data added successfully",
@@ -26,7 +28,7 @@ const createProfile = async (req, res) => {
 // Get all profiles
 const getProfiles = async (req, res) => {
   try {
-    const profiles = await profileModel.find();
+    const profiles = await profileModel.find().populate("userid");
     res.status(200).json({
       message: "Profile data fetched successfully",
       data: profiles
@@ -81,9 +83,31 @@ const deleteProfile = async (req, res) => {
   }
 };
 
+const getprofilebyuserid= async(req,res)=>{
+    try{
+      const userid=req.params.id
+      const getpro=await profileModel.find({userid:userid}).populate("userid")
+      res.status(200).json({
+        message:"profile fetch succesfully",
+        data:getpro
+      })
+      if(!getpro){
+        res.status(404).json({
+            message:"any profile doesn't exist",
+        })
+      }
+    }catch(err){
+       res.status(500).json({
+         mesage:"some error occured during get profile by userid",
+         data:err.message
+       })
+    }
+}
+
 module.exports = {
   createProfile,
   getProfiles,
   updateProfile,
-  deleteProfile
+  deleteProfile,
+  getprofilebyuserid
 };

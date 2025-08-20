@@ -7,6 +7,10 @@ const profileSchema= new Schema({
     },
     profilepic:{
         type:String
+    },
+    userid:{
+        type:Schema.Types.ObjectId,
+        ref:"users"
     }
 })
 

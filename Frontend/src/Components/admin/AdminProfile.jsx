@@ -67,7 +67,7 @@ const AdminProfile = () => {
     <div className="user-profile">
       <h1>Admin Profile</h1>
       <div className="profile-card">
-        {/* {!isImageUploaded ? (
+        {!isImageUploaded ? (
           <form onSubmit={handleSubmit(submitHandler)} className="upload-form">
             <div className="form-group">
               <label htmlFor="image-upload" className="upload-label">
@@ -93,7 +93,7 @@ const AdminProfile = () => {
               Remove Image
             </button>
           </div>
-        )} */}
+        )}
 
         <div className="profile-info">
           <h2>{userData.firstname}</h2>
