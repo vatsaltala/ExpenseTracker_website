@@ -1,5 +1,6 @@
 const expensecontroller = require("../controllers/ExpenseController");
 const routes = require("express").Router();
+const authMiddleware=require("../middleware/AuthMiddleware")
 
 routes.post("/addexpense",authMiddleware.authMiddleware, expensecontroller.addNewExpense);
 routes.get("/getexpenses",authMiddleware.authMiddleware, expensecontroller.getAllExpenses);

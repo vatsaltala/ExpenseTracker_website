@@ -1,6 +1,7 @@
 
 const incomecontroller = require("../controllers/IncomeController");
 const routes = require("express").Router();
+const authMiddleware=require("../middleware/AuthMiddleware")
 
 routes.post("/addincome",authMiddleware.authMiddleware, incomecontroller.addNewIncome);
 routes.get("/getincomes",authMiddleware.authMiddleware, incomecontroller.getAllIncomes);
