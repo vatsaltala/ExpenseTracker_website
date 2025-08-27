@@ -12,7 +12,11 @@ export const ResetPassword = () => {
   const submitHandler = async (data) => {
     const obj = { password: data.password, token };
     try {
-      await axios.post("http://localhost:3000/user/resetpassword", obj);
+      await axios.post("http://localhost:3000/user/resetpassword", obj,{
+        headers:{
+                Authorization:`Bearer ${token}`
+            }
+      });
       alert("Password reset successful!");
       navigate("/login");
     } catch (err) {

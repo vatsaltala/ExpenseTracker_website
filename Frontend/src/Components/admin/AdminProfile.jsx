@@ -24,6 +24,7 @@ const AdminProfile = () => {
       const res = await axios.post("http://localhost:3000/create_product_file", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization:`Bearer ${token}`
         },
       });
 
@@ -49,7 +50,12 @@ const AdminProfile = () => {
     const fetchUserData = async () => {
       try {
         const userid = localStorage.getItem("id");
-        const res = await axios.get(`http://localhost:3000/user/getuser/${userid}`);
+        const token=localStorage.getItem("token")
+        const res = await axios.get(`http://localhost:3000/user/getuser/${userid}`,{
+          headers:{
+                Authorization:`Bearer ${token}`
+            }
+        });
         setUserData(res.data.data);
         if (res.data.data.avatarUrl) {
           setImagePreview(res.data.data.avatarUrl);

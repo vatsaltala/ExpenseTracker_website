@@ -9,9 +9,14 @@ const ContactUs = () => {
   const { register, handleSubmit } = useForm();
 
   const submitHandler = async (data) => {
+    const token=localStorage.getItem("token")
     console.log("formData...", data);
     try {
-      const res = await axios.post("http://localhost:3000/issue/addissue", data);
+      const res = await axios.post("http://localhost:3000/issue/addissue", data,{
+        headers:{
+                Authorization:`Bearer ${token}`
+            }
+      });
       console.log(res);
       if (res.status === 201) {
         alert("Issue submitted successfully!");

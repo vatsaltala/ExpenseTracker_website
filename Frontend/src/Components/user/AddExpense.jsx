@@ -15,6 +15,7 @@ const AddExpense = () => {
     // Get userid from localStorage when component mounts
     useEffect(() => {
         const id = localStorage.getItem("id");
+        var token=localStorage.getItem("token")
         if (id) {
             setUserId(id);
             // Fetch user's expenses automatically when component mounts
@@ -29,6 +30,10 @@ const AddExpense = () => {
             const res = await axios.post("http://localhost:3000/expense/addexpense", {
                 ...data,
                 userid: userId
+            },{
+                headers:{
+                Authorization:`Bearer ${token}`
+            }
             });
             console.log(res.data);
             setError(null);
@@ -45,7 +50,11 @@ const AddExpense = () => {
     const fetchExpensesByUserId = async (id) => {
         setLoading(true);
         try {
-            const res = await axios.get(`http://localhost:3000/expense/getexpensesbyuser/${id}`);
+            const res = await axios.get(`http://localhost:3000/expense/getexpensesbyuser/${id}`,{
+                headers:{
+                Authorization:`Bearer ${token}`
+            }
+            });
             console.log(res.data);
             setExpense(res.data.data); // Ensure the response has a 'data' field
             setError(null);
@@ -60,7 +69,11 @@ const AddExpense = () => {
     // Function to handle deleting an expense
     const handleDelete = async (id) => {
         try {
-            const res = await axios.delete(`http://localhost:3000/expense/deleteexpense/${id}`);
+            const res = await axios.delete(`http://localhost:3000/expense/deleteexpense/${id}`,{
+                headers:{
+                Authorization:`Bearer ${token}`
+            }
+            });
             console.log(res.data);
             alert("Expense deleted successfully!");
             fetchExpensesByUserId(userId); // Refresh the expense list after deleting
@@ -73,7 +86,11 @@ const AddExpense = () => {
     // Function to handle updating an expense
     const handleUpdate = async (id, updatedData) => {
         try {
-            const res = await axios.put(`http://localhost:3000/expense/updateexpense/${id}`, updatedData);
+            const res = await axios.put(`http://localhost:3000/expense/updateexpense/${id}`, updatedData,{
+                headers:{
+                Authorization:`Bearer ${token}`
+            }
+            });
             console.log(res.data);
             alert("Expense updated successfully!");
             fetchExpensesByUserId(userId); // Refresh the expense list after updating
@@ -126,7 +143,11 @@ const AddExpense = () => {
     const getcategory=async()=>{
 
         // ["Food", "Education", "Travel", "Grocery", "Fashion", "Electronics", "Bills"]
-        const catres = await axios.get(`http://localhost:3000/category/getcategories`)    
+        const catres = await axios.get(`http://localhost:3000/category/getcategories`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })    
         console.log(catres)
         setCategories(catres.data.data)
     }

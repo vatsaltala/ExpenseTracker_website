@@ -15,6 +15,7 @@ const AddIncome = () => {
     // Get userid from localStorage when component mounts
     useEffect(() => {
         const id = localStorage.getItem("id");
+        var token=localStorage.getItem("token")
         if (id) {
             setUserId(id);
             // Fetch user's incomes automatically when component mounts
@@ -29,6 +30,10 @@ const AddIncome = () => {
             const res = await axios.post("http://localhost:3000/income/addincome", {
                 ...data,
                 userid: userId
+            },{
+                headers:{
+                Authorization:`Bearer ${token}`
+            }
             });
             console.log(res.data);
             setError(null);
@@ -45,7 +50,11 @@ const AddIncome = () => {
     const fetchIncomesByUserId = async (id) => {
         setLoading(true);
         try {
-            const res = await axios.get(`http://localhost:3000/income/getincomesbyuser/${id}`);
+            const res = await axios.get(`http://localhost:3000/income/getincomesbyuser/${id}`,{
+                headers:{
+                Authorization:`Bearer ${token}`
+            }
+            });
             console.log(res.data);
             setIncome(res.data.data); // Ensure the response has a 'data' field
             setError(null);
@@ -60,7 +69,11 @@ const AddIncome = () => {
     // Function to handle deleting an income
     const handleDelete = async (id) => {
         try {
-            const res = await axios.delete(`http://localhost:3000/income/deleteincome/${id}`);
+            const res = await axios.delete(`http://localhost:3000/income/deleteincome/${id}`,{
+                headers:{
+                Authorization:`Bearer ${token}`
+            }
+            });
             console.log(res.data);
             alert("Income deleted successfully!");
             fetchIncomesByUserId(userId); // Refresh the income list after deleting
@@ -73,7 +86,11 @@ const AddIncome = () => {
     // Function to handle updating an income
     const handleUpdate = async (id, updatedData) => {
         try {
-            const res = await axios.put(`http://localhost:3000/income/updateincome/${id}`, updatedData);
+            const res = await axios.put(`http://localhost:3000/income/updateincome/${id}`, updatedData,{
+                headers:{
+                Authorization:`Bearer ${token}`
+            }
+            });
             console.log(res.data);
             alert("Income updated successfully!");
             fetchIncomesByUserId(userId); // Refresh the income list after updating
@@ -126,7 +143,11 @@ const AddIncome = () => {
 
     const getcategories =async()=>{
         try {
-            const ires = await axios.get("http://localhost:3000/incomecategory/getincomecategories");
+            const ires = await axios.get("http://localhost:3000/incomecategory/getincomecategories",{
+                headers:{
+                Authorization:`Bearer ${token}`
+            }
+            });
             console.log(ires);
             setCategories(ires.data.data);
         } catch (err) {

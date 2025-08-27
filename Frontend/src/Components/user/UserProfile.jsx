@@ -28,6 +28,7 @@ const UserProfile = () => {
       const res = await axios.post("/create_product_file", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization:`Bearer ${token}`
         },
       });
       
@@ -42,7 +43,12 @@ const UserProfile = () => {
     const fetchUserData = async () => {
       try {
         const userid = localStorage.getItem("id");
-        const res = await axios.get(`http://localhost:3000/user/getuser/${userid}`);
+        var token=localStorage.getItem("token")
+        const res = await axios.get(`http://localhost:3000/user/getuser/${userid}`,{
+          headers:{
+                Authorization:`Bearer ${token}`
+            }
+        });
         setUserData(res.data.data);
       } catch (error) {
         console.error("Error fetching user data:", error);

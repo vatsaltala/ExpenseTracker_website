@@ -10,8 +10,13 @@ export const AdminNavbar = () => {
     const fetchAdminDetails = async () => {
       try {
         const userid = localStorage.getItem("id");
+        const token =localStorage.getItem("token")
         if (userid) {
-          const userres = await axios.get(`http://localhost:3000/user/getuser/${userid}`);
+          const userres = await axios.get(`http://localhost:3000/user/getuser/${userid}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+          });
           setUserdata({
             firstname: userres.data.data.firstname,
             lastname: userres.data.data.lastname,

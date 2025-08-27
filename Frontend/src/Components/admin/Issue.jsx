@@ -11,7 +11,12 @@ export const Issue = () => {
 
   const fetchIssues = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/issue/issues");
+      const token=localStorage.getItem("token")
+      const response = await axios.get("http://localhost:3000/issue/issues",{
+        headers:{
+                Authorization:`Bearer ${token}`
+            }
+      });
       setIssues(response.data.data || []);
     } catch (error) {
       console.error("Error fetching issues:", error);

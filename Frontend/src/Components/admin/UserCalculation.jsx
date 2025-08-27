@@ -13,6 +13,7 @@ const UserCalculation = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        const token=localStorage.getItem("token")
         const fetchData = async () => {
             if (!userId) {
                 setError("No user ID provided");
@@ -21,12 +22,24 @@ const UserCalculation = () => {
 
             setLoading(true);
             try {
-                const userRes = await axios.get(`http://localhost:3000/user/getuser/${userId}`);
+                const userRes = await axios.get(`http://localhost:3000/user/getuser/${userId}`,{
+                    headers:{
+                        Authorization:`Bearer ${token}`
+                    }
+                });
                 setUserDetails(userRes.data.data);
 
                 const [incomeRes, expenseRes] = await Promise.all([
-                    axios.get(`http://localhost:3000/income/getincomesbyuser/${userId}`),
-                    axios.get(`http://localhost:3000/expense/getexpensesbyuser/${userId}`)
+                    axios.get(`http://localhost:3000/income/getincomesbyuser/${userId}`,{
+                        headers:{
+                Authorization:`Bearer ${token}`
+            }
+                    }),
+                    axios.get(`http://localhost:3000/expense/getexpensesbyuser/${userId}`,{
+                        headers:{
+                Authorization:`Bearer ${token}`
+            }
+                    })
                 ]);
                 
                 setIncome(incomeRes.data.data);

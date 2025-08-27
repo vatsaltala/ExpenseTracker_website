@@ -126,11 +126,16 @@ const AddIncomeCategory = () => {
 
   useEffect(() => {
     fetchCategories();
+    var token=localStorage.getItem("token")
   }, []);
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/incomecategory/getincomecategories');
+      const res = await axios.get('http://localhost:3000/incomecategory/getincomecategories',{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      });
       setCategories(res.data.data || []);
     } catch (err) {
       console.error('Failed to fetch categories:', err);
@@ -142,12 +147,20 @@ const AddIncomeCategory = () => {
       if (editingCategory) {
         await axios.put(`http://localhost:3000/incomecategory/updateincomecategory/${editingCategory._id}`, {
           category: data.category,
+        },{
+          headers:{
+            Authorization:`Bearer ${token}`
+          }
         });
         setEditingCategory(null);
       } else {
         await axios.post('http://localhost:3000/incomecategory/addincomecategory', {
           category: data.category,
-        });
+        },{
+          headers:{
+          Authorization:`Bearer ${token}`
+        }
+      });
       }
       reset();
       fetchCategories();
@@ -164,7 +177,11 @@ const AddIncomeCategory = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/incomecategory/deleteincomecategory/${id}`);
+      await axios.delete(`http://localhost:3000/incomecategory/deleteincomecategory/${id}`,{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      });
       fetchCategories();
     } catch (err) {
       console.error('Error deleting category:', err);

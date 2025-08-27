@@ -7,8 +7,16 @@ const Chart1 = () => {
     const {userid} =params()
     const {categoryid} =params()
     const fetchdatabyuseridandcategoryid=async(categoryid)=>{
-        const expres= await axios.get(`http://localhost:3000/expense/user/${userid}/category/${categoryid}`)
-        const incres = await axios.get(`http:/localhost:3000/income/user/${userid}/category/${categoryid}`)
+        const expres= await axios.get(`http://localhost:3000/expense/user/${userid}/category/${categoryid}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        const incres = await axios.get(`http:/localhost:3000/income/user/${userid}/category/${categoryid}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
         console.log(expres)
         setExpense(expres.data.data)
         console.log(incres)
@@ -19,6 +27,7 @@ const Chart1 = () => {
     useEffect(()=>{
         var userid=req.params.userid
         var categoryid =req.params.cateoryid
+        var token=localStorage.getItem("token")
         fetchdatabyuseridandcategoryid() 
     })
   return (
