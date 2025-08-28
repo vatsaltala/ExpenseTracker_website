@@ -14,7 +14,12 @@ const AddCategory = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/category/getcategories');
+      const token=localStorage.getItem("token")
+      const res = await axios.get('http://localhost:3000/category/getcategories',{
+        headers:{
+            Authorization:`Bearer ${token}`
+          }
+      });
       setCategories(res.data.data || []);
     } catch (err) {
       console.error('Failed to fetch categories:', err);
@@ -23,14 +28,23 @@ const AddCategory = () => {
 
   const onSubmit = async (data) => {
     try {
+      const token=localStorage.getItem("token")
       if (editingCategory) {
         await axios.put(`http://localhost:3000/category/updatecategory/${editingCategory._id}`, {
           category: data.category,
+        },{
+          headers:{
+            Authorization:`Bearer ${token}`
+          }
         });
         setEditingCategory(null);
       } else {
         await axios.post('http://localhost:3000/category/addcategory', {
           category: data.category,
+        },{
+          headers:{
+            Authorization:`Bearer ${token}`
+          }
         });
       }
       reset();
@@ -48,7 +62,12 @@ const AddCategory = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/category/deletecategory/${id}`);
+      const token=localStorage.getItem("token")
+      await axios.delete(`http://localhost:3000/category/deletecategory/${id}`,{
+        headers:{
+            Authorization:`Bearer ${token}`
+          }
+      });
       fetchCategories();
     } catch (err) {
       console.error('Error deleting category:', err);
