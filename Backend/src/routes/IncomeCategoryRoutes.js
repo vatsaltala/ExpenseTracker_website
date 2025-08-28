@@ -1,10 +1,11 @@
 const incomecategorycontroller= require("../controllers/IncomeCategoryController")
 const routes= require("express").Router()
+const authMiddleware=require("../middleware/AuthMiddleware")
 
-routes.post("/addincomecategory", incomecategorycontroller.savecategory )
-routes.get("/getincomecategories", incomecategorycontroller.allcategory)
-routes.get("/incomecategory/:id", incomecategorycontroller.findcategorybyid)
-routes.delete("/deleteincomecategory/:id", incomecategorycontroller.findcategorybyidanddelete)
-routes.put("/updateincomecategory/:id", incomecategorycontroller.updateCategory)
+routes.post("/addincomecategory",authMiddleware.authMiddleware, incomecategorycontroller.savecategory )
+routes.get("/getincomecategories",authMiddleware.authMiddleware, incomecategorycontroller.allcategory)
+routes.get("/incomecategory/:id",authMiddleware.authMiddleware, incomecategorycontroller.findcategorybyid)
+routes.delete("/deleteincomecategory/:id",authMiddleware.authMiddleware, incomecategorycontroller.findcategorybyidanddelete)
+routes.put("/updateincomecategory/:id",authMiddleware.authMiddleware, incomecategorycontroller.updateCategory)
 
 module.exports=routes
