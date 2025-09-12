@@ -5,20 +5,6 @@ const mailUtil = require("../util/MailUtil");
 const jwt = require("jsonwebtoken");
 var secret = "secret";
 
-const addUser = async (req, res) => {
-  try {
-    const user = await usermodel.create(req.body);
-    res.status(201).json({
-      message: "User created successfully",
-      data: user,
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: "Error creating user",
-      data: err,
-    });
-  }
-};
 
 const login = async (req, res) => {
   try {
@@ -79,33 +65,6 @@ const loginuserWithToken = async (req, res) => {
   }
 };
 
-// const signup = async (req, res) => {
-//   try {
-//     const salt = bcrypt.genSaltSync(10);
-//     const hashedpassword = bcrypt.hashSync(req.body.password, salt); // Corrected order
-//     req.body.password = hashedpassword;
-
-//     const usercreated = await usermodel.create(req.body);
-//     await mailUtil.sendingMail(
-//       usercreated.email,
-//       "Welcome to E-Advertisement",
-//       "This is a welcome email."
-//     );
-    
-    
-    
-//     res.status(201).json({
-//       message: "User registered successfully",
-//       data: usercreated,
-//     });
-//   } catch (err) {
-//     res.status(500).json({
-//       message: "Error during signup",
-//       data: err,
-//     });
-//   }
-// };
-
 const signup = async (req, res) => {
   try {
     const salt = bcrypt.genSaltSync(10);
@@ -113,15 +72,14 @@ const signup = async (req, res) => {
     req.body.password = hashedpassword;
 
     const usercreated = await usermodel.create(req.body);
-
-    // await mailUtil.sendingmail(
-    //   usercreated.email,
-    //   "Welcome to E-Advertisement",
-    //   "This is a welcome email."
-    // );
+    const mail=await mailUtil.sendingmail(
+      usercreated.email,
+      "welcome mail",
+      "you are signup successfully"
+    )
 
     res.status(201).json({
-      message: "User registered successfully",
+      message: "User registered successfully and welcome mail sent",
       data: usercreated,
     });
   } catch (err) {
@@ -213,7 +171,6 @@ module.exports = {
   signup,
   getAllUser,
   finduserbyid,
-  addUser,
   addFile,
   loginuserWithToken,
   resetpassword
