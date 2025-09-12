@@ -126,8 +126,13 @@ const AddIncome = () => {
 
     const getcategories =async()=>{
         try {
-            const ires = await axios.get("http://localhost:3000/incomecategory/getincomecategories");
-            console.log(ires);
+            const token=localStorage.getItem("token")
+            const ires = await axios.get("http://localhost:3000/incomecategory/getincomecategories",{
+                headers:{
+                    Authorization:`Bearer ${token}`
+                }
+            });
+            console.log(res);
             setCategories(ires.data.data);
         } catch (err) {
             setError("Failed to fetch categories. Please try again.");
