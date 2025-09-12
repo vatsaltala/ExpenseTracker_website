@@ -21,12 +21,17 @@ const UserCalculation = () => {
 
             setLoading(true);
             try {
+                const token=localStorage.getItem("token")
                 const userRes = await axios.get(`http://localhost:3000/user/getuser/${userId}`);
                 setUserDetails(userRes.data.data);
 
                 const [incomeRes, expenseRes] = await Promise.all([
                     axios.get(`http://localhost:3000/income/getincomesbyuser/${userId}`),
-                    axios.get(`http://localhost:3000/expense/getexpensesbyuser/${userId}`)
+                    axios.get(`http://localhost:3000/expense/getexpensesbyuser/${userId}`,{
+                        headers:{
+                            Authorization:`Bearer ${token}`
+                        }
+                    })
                 ]);
                 
                 setIncome(incomeRes.data.data);

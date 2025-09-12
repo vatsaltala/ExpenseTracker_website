@@ -15,8 +15,13 @@ const History = () => {
             setLoading(true);
             const userid=localStorage.getItem("id")
             try {
+                const token=localStorage.getItem("token")
                 const incomeRes = await axios.get(`http://localhost:3000/income/getincomesbyuser/${userid}`);
-                const expenseRes = await axios.get(`http://localhost:3000/expense/getexpensesbyuser/${userid}`);
+                const expenseRes = await axios.get(`http://localhost:3000/expense/getexpensesbyuser/${userid}`,{
+                    headers:{
+                        Authorization:`Bearer ${token}`
+                    }
+                });
                 setIncome(incomeRes.data.data);
                 setExpenses(expenseRes.data.data);
                 setError(null);
