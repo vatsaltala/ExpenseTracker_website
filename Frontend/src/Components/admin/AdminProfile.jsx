@@ -67,33 +67,6 @@ const AdminProfile = () => {
     <div className="user-profile">
       <h1>Admin Profile</h1>
       <div className="profile-card">
-        {!isImageUploaded ? (
-          <form onSubmit={handleSubmit(submitHandler)} className="upload-form">
-            <div className="form-group">
-              <label htmlFor="image-upload" className="upload-label">
-                <i className="bi bi-cloud-arrow-up"></i>
-                <span>Choose Profile Picture</span>
-              </label>
-              <input
-                id="image-upload"
-                type="file"
-                accept="image/*"
-                {...register("image", { required: true })}
-                className="file-input"
-              />
-            </div>
-            <button type="submit" className="upload-button">
-              Upload Image
-            </button>
-          </form>
-        ) : (
-          <div className="image-preview">
-            <img src={imagePreview} alt="Profile" className="profile-image" />
-            <button onClick={removeImage} className="change-image-button">
-              Remove Image
-            </button>
-          </div>
-        )}
 
         <div className="profile-info">
           <h2>{userData.firstname}</h2>
