@@ -22,7 +22,7 @@ const PrivateRoutes = ()=>{
     if(isLoading){
         return <div>loading...</div>
     }
-    return auth.isLoggedin == true?<Outlet/> :<Navigate to="/login"/>
+    return auth.isLoggedin == true?<Outlet/> :<Navigate to="/login" replace/>
     //{auth:{isLoggdin:true|fasle,role:""||role:"admin"},isLaoding:true}
 
 }

@@ -24,6 +24,8 @@ import Login from "./Components/common/Login";
 import { Issue } from "./Components/admin/Issue";
 import { Userinfo } from "./Components/layouts/Userinfo";
 import UserProfile from "./Components/user/UserProfile";
+import { UserRoutes } from "./Components/hooks/UserRoutes";
+import { AdminRoutes } from "./Components/hooks/AdminRoutes";
 
 function App() {
   return (
@@ -42,6 +44,7 @@ function App() {
           {/* Protected routes */}
           <Route element={<PrivateRoutes />}>
             {/* User routes */}
+            <Route element={<UserRoutes/>}>
             <Route path="/user" element={<UserSidebar />}>
               <Route path="contact" element={<ContactUs />} />
               <Route path="profile" element={<UserProfile />} />
@@ -49,11 +52,12 @@ function App() {
               <Route path="income" element={<Income />} />
               <Route path="AllExpense" element={<History />} />
               <Route path="chart" element={<Chart />} />
-              <Route path="info" element={<Userinfo />} />
-              
+              <Route path="info" element={<Userinfo />} /> 
+            </Route>
             </Route>
 
             {/* Admin routes */}
+            <Route element={<AdminRoutes/>}>
             <Route path="/admin" element={<AdminSidebar />}>
               <Route path="addcategory" element={<AddCategory />} />
               <Route path="addincomecategory" element={<AddIncomeCategory />} />
@@ -64,6 +68,7 @@ function App() {
               <Route path="adminprofile" element={<AdminProfile />} />
               <Route path="issues" element={<Issue />} />
               <Route path="info" element={<Userinfo />} />
+            </Route>
             </Route>
           </Route>
         </Routes>
